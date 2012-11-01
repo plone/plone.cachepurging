@@ -4,7 +4,8 @@ Changelog
 1.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed purge paths for virtual hosting scenarios using virtual path components.
+  [dokai]
 
 
 1.0.3 (2011-09-16)
