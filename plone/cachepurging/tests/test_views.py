@@ -22,8 +22,26 @@ class FauxContext(object):
     pass
 
 
+class FauxResponse(object):
+
+    def __init__(self):
+        self.buffer = []
+
+    def write(self, msg):
+        self.buffer.append(msg)
+
+    def setHeader(self, key, value):
+        pass
+
+
 class FauxRequest(dict):
-    pass
+
+    form = dict()
+
+    def __init__(self, *args, **kw):
+        super(FauxRequest, self).__init__(*args, **kw)
+        self.response = FauxResponse()
+
 
 
 class Handler(object):
@@ -56,15 +74,15 @@ class TestQueuePurge(unittest.TestCase):
         self.settings.enabled = False
 
         view = QueuePurge(FauxContext(), FauxRequest())
-        self.assertEqual("Caching not enabled", view())
+        self.assertEqual("Cache purging not enabled", view())
         self.assertEqual([], self.handler.invocations)
 
     def test_enabled(self):
         self.settings.enabled = True
 
         context = FauxContext()
-        view = QueuePurge(context, FauxRequest)
-        self.assertEqual("Queued", view())
+        view = QueuePurge(context, FauxRequest())
+        self.assertEqual("Queued:\n\n", view())
         self.assertEqual(1, len(self.handler.invocations))
         self.assertTrue(self.handler.invocations[0].object is context)
 
@@ -107,20 +125,25 @@ class TestPurgeImmediately(unittest.TestCase):
     def test_disabled(self):
         self.settings.enabled = False
         view = PurgeImmediately(FauxContext(), FauxRequest())
-        self.assertEqual("Caching not enabled", view())
+        self.assertEqual("Cache purging not enabled", view())
 
     def test_purge(self):
-        view = PurgeImmediately(FauxContext(), FauxRequest())
+        request = FauxRequest()
+        view = PurgeImmediately(FauxContext(), request)()
         self.assertEqual(
-            "Purged: http://localhost:1234/foo, "
-            "Status: 200 OK, "
-            "X-Cache: cached, "
-            "Error: None\n"
-            "Purged: http://localhost:1234/bar, "
-            "Status: 200 OK, "
-            "X-Cache: cached, "
-            "Error: None\n",
-            view(),
+            [
+                b'Cache purging initiated...\n\n',
+                b"(hint: add '?traceback' to url to show full traceback in case of errors)\n\n",
+                b'Proxies to purge: http://localhost:1234\n',
+                b'- process path: /foo\n',
+                b'  - send to purge http://localhost:1234/foo\n',
+                b'    response with status: 200 OK, X-Cache: cached\n',
+                b'- process path: /bar\n',
+                b'  - send to purge http://localhost:1234/bar\n',
+                b'    response with status: 200 OK, X-Cache: cached\n',
+                b'Done.\n'
+            ],
+            request.response.buffer,
         )
 
 
