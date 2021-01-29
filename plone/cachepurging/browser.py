@@ -5,14 +5,9 @@ from plone.cachepurging.utils import getPathsToPurge
 from plone.cachepurging.utils import getURLsToPurge
 from plone.cachepurging.utils import isCachePurgingEnabled
 from plone.registry.interfaces import IRegistry
-from six import StringIO
 from z3c.caching.purge import Purge
 from zope.component import getUtility
 from zope.event import notify
-
-RESULT_TPL = (
-    "Purged: {url}, Status: {status}, X-Cache: {xcache}, Error: {xerror}\n"
-)
 
 
 class QueuePurge(object):
@@ -24,12 +19,14 @@ class QueuePurge(object):
         self.request = request
 
     def __call__(self):
-
+        self.request.response.setHeader('Content-type', 'text/plain')
         if not isCachePurgingEnabled():
-            return "Caching not enabled"
+            return "Cache purging not enabled"
+
+        paths = getPathsToPurge(self.context, self.request)
 
         notify(Purge(self.context))
-        return "Queued"
+        return "Queued:\n\n{0}".format("\n".join(paths))
 
 
 class PurgeImmediately(object):
@@ -40,21 +37,36 @@ class PurgeImmediately(object):
         self.context = context
         self.request = request
 
+    def write(self, msg):
+        if not isinstance(msg, bytes):
+            msg = msg.encode("utf8")
+        self.request.response.write(msg)
+
     def __call__(self):
+        self.request.response.setHeader('Content-type', 'text/plain')
         if not isCachePurgingEnabled():
-            return "Caching not enabled"
+            return "Cache purging not enabled"
 
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(ICachePurgingSettings)
+        self.write("Cache purging initiated...\n\n")
+
+        settings = getUtility(IRegistry).forInterface(ICachePurgingSettings)
         purger = getUtility(IPurger)
-        out = StringIO()
-
+        caching_proxies = settings.cachingProxies
+        traceback = self.request.form.get("traceback")
+        if not traceback:
+            self.write("(hint: add '?traceback' to url to show full traceback in case of errors)\n\n")
+        self.write("Proxies to purge: {0}\n".format(', '.join(caching_proxies)))
         for path in getPathsToPurge(self.context, self.request):
-            for url in getURLsToPurge(path, settings.cachingProxies):
+            self.write("- process path: {0}\n".format(path))
+            for url in getURLsToPurge(path, caching_proxies):
+                self.write("  - send to purge {0}\n".format(url).encode("utf-8"))
                 status, xcache, xerror = purger.purgeSync(url)
-                out.write(
-                    RESULT_TPL.format(
-                        url=url, status=status, xcache=xcache, xerror=xerror
+                self.write(
+                    "    response with status: {status}, X-Cache: {xcache}\n".format(
+                        status=status,
+                        xcache=xcache
                     )
                 )
-        return out.getvalue()
+                if traceback and xerror:
+                    self.write(xerror + "\n")
+        self.write("Done.\n")
