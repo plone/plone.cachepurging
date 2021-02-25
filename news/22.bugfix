@@ -1,0 +1,3 @@
+Replaced deprecated Thread.isAlive by is_alive.
+The old name no longer works in Python 3.9.
+The new name already works in Python 2.7.
