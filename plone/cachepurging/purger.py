@@ -122,7 +122,7 @@ class DefaultPurger(object):
         if wait:
             for worker in six.itervalues(self.workers):
                 worker.join(5)
-                if worker.isAlive():
+                if worker.is_alive():
                     logger.warning(
                         "Worker thread %s failed to terminate",
                         worker

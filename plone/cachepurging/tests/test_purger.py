@@ -87,10 +87,10 @@ class TestCase(unittest.TestCase):
             if self.httpd is not None:
                 self.httpd.shutdown()
 
-                if self.httpt.isAlive():
+                if self.httpt.is_alive():
                     self.httpt.join(5)
 
-                if self.httpt.isAlive():
+                if self.httpt.is_alive():
                     self.fail("Thread failed to shut down")
 
                 self.purger = None
