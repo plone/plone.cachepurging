@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.3 (2021-03-02)
+------------------
+
+Bug fixes:
+
+
+- Replaced deprecated Thread.isAlive by is_alive.
+  The old name no longer works in Python 3.9.
+  The new name already works in Python 2.7. (#22)
+
+
 2.0.2 (2020-04-20)
 ------------------
 
