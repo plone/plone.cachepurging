@@ -1,3 +1,0 @@
-Better debugging capabilities by enhancing the output of the purge views
-`@@plone.cachepurging.purge` and `@@plone.cachepurging.queue`.
-[jensens]

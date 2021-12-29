@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.4 (2021-12-29)
+------------------
+
+Bug fixes:
+
+
+- Better debugging capabilities by enhancing the output of the purge views
+  `@@plone.cachepurging.purge` and `@@plone.cachepurging.queue`.
+  [jensens] (#21)
+
+
 2.0.3 (2021-03-02)
 ------------------
 
