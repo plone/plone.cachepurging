@@ -1,24 +1,21 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
-version = '2.0.5.dev0'
+
+version = "3.0.0a1.dev0"
 
 setup(
     name="plone.cachepurging",
     version=version,
     description="Cache purging support for Zope 2 applications",
-    long_description=(
-        open("README.rst").read() + "\n" + open("CHANGES.rst").read()
-    ),
+    long_description=(open("README.rst").read() + "\n" + open("CHANGES.rst").read()),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Framework :: Plone",
-        "Framework :: Plone :: 5.2",
         "Framework :: Plone :: 6.0",
         "Framework :: Plone :: Core",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -36,17 +33,8 @@ setup(
         "setuptools",
         "plone.registry",
         "requests",
-        "six",
         "z3c.caching",
-        "zope.annotation",
-        "zope.component",
-        "zope.event",
-        "zope.i18nmessageid",
-        "zope.interface",
-        "zope.lifecycleevent",
-        "zope.schema",
-        "zope.testing",
-        "Zope2",
+        "Zope",
     ],
     extras_require={"test": ["plone.app.testing"]},
 )

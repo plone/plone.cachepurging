@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """This test is borrwed heavily from Products.CMFSquidTool. That code is ZPL
 licensed.
 """
@@ -23,7 +22,7 @@ class TestHandler(BaseHTTPRequestHandler):
             print("Unexpected connection from the purge tool")
             print(self.command, self.path, self.protocol_version)
             for h, v in self.headers.items():
-                print("%s: %s" % (h, v))
+                print(f"{h}: {v}")
             raise RuntimeError("Unexpected connection")
 
         # We may have a function to call to check things.
@@ -113,14 +112,14 @@ class TestCase(unittest.TestCase):
 
 class TestSync(TestCase):
     def setUp(self):
-        super(TestSync, self).setUp()
+        super().setUp()
         self.maxDiff = None
 
     def tearDown(self):
-        super(TestSync, self).tearDown()
+        super().tearDown()
 
     def dispatchURL(self, path, method="PURGE"):
-        url = "http://localhost:%s%s" % (self.port, path)
+        url = f"http://localhost:{self.port}{path}"
         return self.purger.purgeSync(url, method)
 
     def testSimpleSync(self):
@@ -144,7 +143,7 @@ class TestSync(TestCase):
 
 class TestAsync(TestCase):
     def dispatchURL(self, path, method="PURGE"):
-        url = "http://localhost:%s%s" % (self.port, path)
+        url = f"http://localhost:{self.port}{path}"
         self.purger.purgeAsync(url, method)
 
         # Item should now be in the queue!
@@ -173,7 +172,7 @@ class TestAsync(TestCase):
         self.dispatchURL("/bar")  # will consume error, then retry
         self.assertTrue(
             self.httpd.response_queue.empty(),
-            "Left items behind in HTTPD response queue."
+            "Left items behind in HTTPD response queue.",
         )
 
     def testAsyncNotFOund(self):
@@ -181,13 +180,12 @@ class TestAsync(TestCase):
         self.httpd.queue_response(response=200)
         self.dispatchURL("/foo")  # works
         self.assertFalse(
-            self.httpd.response_queue.empty(),
-            "404 was retried instead of consumed."
+            self.httpd.response_queue.empty(), "404 was retried instead of consumed."
         )
         self.dispatchURL("/foo")  # works
         self.assertTrue(
             self.httpd.response_queue.empty(),
-            "Left items behind in HTTPD response queue."
+            "Left items behind in HTTPD response queue.",
         )
 
 
@@ -198,7 +196,7 @@ class TestAsyncConnectionFailure(TestCase):
         self.httpd, self.httpt, self.port = self.startServer(start=False)
 
     def dispatchURL(self, path, method="PURGE"):
-        url = "http://localhost:%s%s" % (self.port, path)
+        url = f"http://localhost:{self.port}{path}"
         self.purger.purgeAsync(url, method)
 
         # Item should now be in the queue!

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.cachepurging.browser import PurgeImmediately
 from plone.cachepurging.browser import QueuePurge
 from plone.cachepurging.interfaces import ICachePurgingSettings
@@ -18,12 +17,11 @@ import unittest
 import zope.component.testing
 
 
-class FauxContext(object):
+class FauxContext:
     pass
 
 
-class FauxResponse(object):
-
+class FauxResponse:
     def __init__(self):
         self.buffer = []
 
@@ -39,12 +37,11 @@ class FauxRequest(dict):
     form = dict()
 
     def __init__(self, *args, **kw):
-        super(FauxRequest, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.response = FauxResponse()
 
 
-
-class Handler(object):
+class Handler:
     def __init__(self):
         self.invocations = []
 
@@ -100,7 +97,7 @@ class TestPurgeImmediately(unittest.TestCase):
 
         @implementer(IPurgePaths)
         @adapter(FauxContext)
-        class FauxPurgePaths(object):
+        class FauxPurgePaths:
             def __init__(self, context):
                 self.context = context
 
@@ -113,7 +110,7 @@ class TestPurgeImmediately(unittest.TestCase):
         provideAdapter(FauxPurgePaths, name="test1")
 
         @implementer(IPurger)
-        class FauxPurger(object):
+        class FauxPurger:
             def purgeSync(self, url, httpVerb="PURGE"):
                 return "200 OK", "cached", None
 
@@ -132,16 +129,16 @@ class TestPurgeImmediately(unittest.TestCase):
         view = PurgeImmediately(FauxContext(), request)()
         self.assertEqual(
             [
-                b'Cache purging initiated...\n\n',
+                b"Cache purging initiated...\n\n",
                 b"(hint: add '?traceback' to url to show full traceback in case of errors)\n\n",
-                b'Proxies to purge: http://localhost:1234\n',
-                b'- process path: /foo\n',
-                b'  - send to purge http://localhost:1234/foo\n',
-                b'    response with status: 200 OK, X-Cache: cached\n',
-                b'- process path: /bar\n',
-                b'  - send to purge http://localhost:1234/bar\n',
-                b'    response with status: 200 OK, X-Cache: cached\n',
-                b'Done.\n'
+                b"Proxies to purge: http://localhost:1234\n",
+                b"- process path: /foo\n",
+                b"  - send to purge http://localhost:1234/foo\n",
+                b"    response with status: 200 OK, X-Cache: cached\n",
+                b"- process path: /bar\n",
+                b"  - send to purge http://localhost:1234/bar\n",
+                b"    response with status: 200 OK, X-Cache: cached\n",
+                b"Done.\n",
             ],
             request.response.buffer,
         )

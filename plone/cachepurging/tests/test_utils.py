@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.cachepurging import utils
 from plone.cachepurging.interfaces import ICachePurgingSettings
 from plone.cachepurging.interfaces import IPurgePathRewriter
@@ -15,7 +14,7 @@ import unittest
 import zope.component.testing
 
 
-class FauxContext(object):
+class FauxContext:
     pass
 
 
@@ -77,14 +76,12 @@ class TestGetPathsToPurge(unittest.TestCase):
         zope.component.testing.tearDown()
 
     def test_no_purge_paths(self):
-        self.assertEqual(
-            [], list(utils.getPathsToPurge(self.context, self.request))
-        )
+        self.assertEqual([], list(utils.getPathsToPurge(self.context, self.request)))
 
     def test_empty_relative_paths(self):
         @implementer(IPurgePaths)
         @adapter(FauxContext)
-        class FauxPurgePaths(object):
+        class FauxPurgePaths:
             def __init__(self, context):
                 self.context = context
 
@@ -96,14 +93,12 @@ class TestGetPathsToPurge(unittest.TestCase):
 
         provideAdapter(FauxPurgePaths, name="test1")
 
-        self.assertEqual(
-            [], list(utils.getPathsToPurge(self.context, self.request))
-        )
+        self.assertEqual([], list(utils.getPathsToPurge(self.context, self.request)))
 
     def test_no_rewriter(self):
         @implementer(IPurgePaths)
         @adapter(FauxContext)
-        class FauxPurgePaths(object):
+        class FauxPurgePaths:
             def __init__(self, context):
                 self.context = context
 
@@ -123,7 +118,7 @@ class TestGetPathsToPurge(unittest.TestCase):
     def test_test_rewriter(self):
         @implementer(IPurgePaths)
         @adapter(FauxContext)
-        class FauxPurgePaths(object):
+        class FauxPurgePaths:
             def __init__(self, context):
                 self.context = context
 
@@ -137,7 +132,7 @@ class TestGetPathsToPurge(unittest.TestCase):
 
         @implementer(IPurgePathRewriter)
         @adapter(FauxRequest)
-        class DefaultRewriter(object):
+        class DefaultRewriter:
             def __init__(self, request):
                 self.request = request
 
@@ -154,7 +149,7 @@ class TestGetPathsToPurge(unittest.TestCase):
     def test_multiple_purge_paths(self):
         @implementer(IPurgePaths)
         @adapter(FauxContext)
-        class FauxPurgePaths1(object):
+        class FauxPurgePaths1:
             def __init__(self, context):
                 self.context = context
 
@@ -168,7 +163,7 @@ class TestGetPathsToPurge(unittest.TestCase):
 
         @implementer(IPurgePaths)
         @adapter(FauxContext)
-        class FauxPurgePaths2(object):
+        class FauxPurgePaths2:
             def __init__(self, context):
                 self.context = context
 
@@ -182,7 +177,7 @@ class TestGetPathsToPurge(unittest.TestCase):
 
         @implementer(IPurgePathRewriter)
         @adapter(FauxRequest)
-        class DefaultRewriter(object):
+        class DefaultRewriter:
             def __init__(self, request):
                 self.request = request
 
@@ -208,7 +203,7 @@ class TestGetPathsToPurge(unittest.TestCase):
     def test_rewriter_abort(self):
         @implementer(IPurgePaths)
         @adapter(FauxContext)
-        class FauxPurgePaths1(object):
+        class FauxPurgePaths1:
             def __init__(self, context):
                 self.context = context
 
@@ -222,7 +217,7 @@ class TestGetPathsToPurge(unittest.TestCase):
 
         @implementer(IPurgePaths)
         @adapter(FauxContext)
-        class FauxPurgePaths2(object):
+        class FauxPurgePaths2:
             def __init__(self, context):
                 self.context = context
 
@@ -236,7 +231,7 @@ class TestGetPathsToPurge(unittest.TestCase):
 
         @implementer(IPurgePathRewriter)
         @adapter(FauxRequest)
-        class DefaultRewriter(object):
+        class DefaultRewriter:
             def __init__(self, request):
                 self.request = request
 
