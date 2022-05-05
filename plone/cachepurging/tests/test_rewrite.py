@@ -42,10 +42,14 @@ class TestRewrite(unittest.TestCase):
             path,
         )
         self.request["SERVER_URL"] = "%s://%s" % (protocol, domain)
-        self.request["PATH_INFO"] = (
-            "/VirtualHostBase/%s/%s:80%s/"
-            "VirtualHostRoot%s%s"
-            % (protocol, domain, root, translatedPrefix, path)
+        self.request[
+            "PATH_INFO"
+        ] = "/VirtualHostBase/%s/%s:80%s/" "VirtualHostRoot%s%s" % (
+            protocol,
+            domain,
+            root,
+            translatedPrefix,
+            path,
         )
         self.request["VIRTUAL_URL"] = "%s://%s%s" % (protocol, domain, path)
 
@@ -189,10 +193,7 @@ class TestRewrite(unittest.TestCase):
         self._prepareVHMRequest("/foo", root="/bar/plone")
 
         self.assertEqual(
-            [
-                "/VirtualHostBase/http/example.com/bar/plone/"
-                "VirtualHostRoot/foo"
-            ],
+            ["/VirtualHostBase/http/example.com/bar/plone/" "VirtualHostRoot/foo"],
             self.rewriter("/foo"),
         )
 
@@ -223,10 +224,7 @@ class TestRewrite(unittest.TestCase):
         self._prepareVHMRequest("/", root="/plone", prefix="/plone")
 
         self.assertEqual(
-            [
-                "/VirtualHostBase/http/example.com/plone/"
-                "VirtualHostRoot/_vh_plone"
-            ],
+            ["/VirtualHostBase/http/example.com/plone/" "VirtualHostRoot/_vh_plone"],
             self.rewriter(""),
         )
 
@@ -268,10 +266,7 @@ class TestRewrite(unittest.TestCase):
         self._prepareVHMRequest("/foo/bar", root="/plone")
 
         self.assertEqual(
-            [
-                "/VirtualHostBase/http/example.com/plone/"
-                "VirtualHostRoot/foo/bar"
-            ],
+            ["/VirtualHostBase/http/example.com/plone/" "VirtualHostRoot/foo/bar"],
             self.rewriter("/foo/bar"),
         )
 
@@ -295,14 +290,9 @@ class TestRewrite(unittest.TestCase):
         settings = registry.forInterface(ICachePurgingSettings)
         settings.virtualHosting = True
 
-        self._prepareVHMRequest(
-            "/foo", domain="example.com:81", protocol="https"
-        )
+        self._prepareVHMRequest("/foo", domain="example.com:81", protocol="https")
         self.assertEqual(
-            [
-                "/VirtualHostBase/https/example.com:81/plone/"
-                "VirtualHostRoot/foo"
-            ],
+            ["/VirtualHostBase/https/example.com:81/plone/" "VirtualHostRoot/foo"],
             self.rewriter("/foo"),
         )
 
@@ -314,15 +304,11 @@ class TestRewrite(unittest.TestCase):
         settings.virtualHosting = True
         settings.domains = ("http://example.org:81", "https://example.com:82")
 
-        self._prepareVHMRequest(
-            "/foo", domain="example.com:81", protocol="https"
-        )
+        self._prepareVHMRequest("/foo", domain="example.com:81", protocol="https")
         self.assertEqual(
             [
-                "/VirtualHostBase/http/example.org:81/plone/VirtualHostRoot/"
-                "foo",
-                "/VirtualHostBase/https/example.com:82/plone/VirtualHostRoot/"
-                "foo",
+                "/VirtualHostBase/http/example.org:81/plone/VirtualHostRoot/" "foo",
+                "/VirtualHostBase/https/example.com:82/plone/VirtualHostRoot/" "foo",
             ],
             self.rewriter("/foo"),
         )
@@ -335,15 +321,11 @@ class TestRewrite(unittest.TestCase):
         settings.virtualHosting = True
         settings.domains = ("http://example.org:81", "https://example.com:82")
 
-        self._prepareVHMRequest(
-            "/bar", domain="example.com:81", protocol="https"
-        )
+        self._prepareVHMRequest("/bar", domain="example.com:81", protocol="https")
         self.assertEqual(
             [
-                "/VirtualHostBase/http/example.org:81/plone/VirtualHostRoot/"
-                "foo",
-                "/VirtualHostBase/https/example.com:82/plone/VirtualHostRoot/"
-                "foo",
+                "/VirtualHostBase/http/example.org:81/plone/VirtualHostRoot/" "foo",
+                "/VirtualHostBase/https/example.com:82/plone/VirtualHostRoot/" "foo",
             ],
             self.rewriter("/foo"),
         )

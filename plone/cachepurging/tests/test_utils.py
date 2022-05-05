@@ -77,9 +77,7 @@ class TestGetPathsToPurge(unittest.TestCase):
         zope.component.testing.tearDown()
 
     def test_no_purge_paths(self):
-        self.assertEqual(
-            [], list(utils.getPathsToPurge(self.context, self.request))
-        )
+        self.assertEqual([], list(utils.getPathsToPurge(self.context, self.request)))
 
     def test_empty_relative_paths(self):
         @implementer(IPurgePaths)
@@ -96,9 +94,7 @@ class TestGetPathsToPurge(unittest.TestCase):
 
         provideAdapter(FauxPurgePaths, name="test1")
 
-        self.assertEqual(
-            [], list(utils.getPathsToPurge(self.context, self.request))
-        )
+        self.assertEqual([], list(utils.getPathsToPurge(self.context, self.request)))
 
     def test_no_rewriter(self):
         @implementer(IPurgePaths)

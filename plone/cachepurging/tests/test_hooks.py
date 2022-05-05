@@ -317,9 +317,7 @@ class TestPurgeHandler(unittest.TestCase):
         request = FauxRequest()
         alsoProvides(request, IAttributeAnnotatable)
 
-        IAnnotations(request)["plone.cachepurging.urls"] = set(
-            ["/foo", "/bar"]
-        )
+        IAnnotations(request)["plone.cachepurging.urls"] = set(["/foo", "/bar"])
 
         @implementer(IPurger)
         class FauxPurger(object):
@@ -340,9 +338,7 @@ class TestPurgeHandler(unittest.TestCase):
         request = FauxRequest()
         alsoProvides(request, IAttributeAnnotatable)
 
-        IAnnotations(request)["plone.cachepurging.urls"] = set(
-            ["/foo", "/bar"]
-        )
+        IAnnotations(request)["plone.cachepurging.urls"] = set(["/foo", "/bar"])
 
         registry = Registry()
         registry.registerInterface(ICachePurgingSettings)
@@ -371,9 +367,7 @@ class TestPurgeHandler(unittest.TestCase):
         request = FauxRequest()
         alsoProvides(request, IAttributeAnnotatable)
 
-        IAnnotations(request)["plone.cachepurging.urls"] = set(
-            ["/foo", "/bar"]
-        )
+        IAnnotations(request)["plone.cachepurging.urls"] = set(["/foo", "/bar"])
 
         registry = Registry()
         registry.registerInterface(ICachePurgingSettings)
@@ -392,9 +386,7 @@ class TestPurgeHandler(unittest.TestCase):
         request = FauxRequest()
         alsoProvides(request, IAttributeAnnotatable)
 
-        IAnnotations(request)["plone.cachepurging.urls"] = set(
-            ["/foo", "/bar"]
-        )
+        IAnnotations(request)["plone.cachepurging.urls"] = set(["/foo", "/bar"])
 
         registry = Registry()
         registry.registerInterface(ICachePurgingSettings)

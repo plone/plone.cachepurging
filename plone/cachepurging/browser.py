@@ -11,15 +11,14 @@ from zope.event import notify
 
 
 class QueuePurge(object):
-    """Manually initiate a purge
-    """
+    """Manually initiate a purge"""
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
 
     def __call__(self):
-        self.request.response.setHeader('Content-type', 'text/plain')
+        self.request.response.setHeader("Content-type", "text/plain")
         if not isCachePurgingEnabled():
             return "Cache purging not enabled"
 
@@ -30,8 +29,7 @@ class QueuePurge(object):
 
 
 class PurgeImmediately(object):
-    """Purge immediately
-    """
+    """Purge immediately"""
 
     def __init__(self, context, request):
         self.context = context
@@ -43,7 +41,7 @@ class PurgeImmediately(object):
         self.request.response.write(msg)
 
     def __call__(self):
-        self.request.response.setHeader('Content-type', 'text/plain')
+        self.request.response.setHeader("Content-type", "text/plain")
         if not isCachePurgingEnabled():
             return "Cache purging not enabled"
 
@@ -54,8 +52,10 @@ class PurgeImmediately(object):
         caching_proxies = settings.cachingProxies
         traceback = self.request.form.get("traceback")
         if not traceback:
-            self.write("(hint: add '?traceback' to url to show full traceback in case of errors)\n\n")
-        self.write("Proxies to purge: {0}\n".format(', '.join(caching_proxies)))
+            self.write(
+                "(hint: add '?traceback' to url to show full traceback in case of errors)\n\n"
+            )
+        self.write("Proxies to purge: {0}\n".format(", ".join(caching_proxies)))
         for path in getPathsToPurge(self.context, self.request):
             self.write("- process path: {0}\n".format(path))
             for url in getURLsToPurge(path, caching_proxies):
@@ -63,8 +63,7 @@ class PurgeImmediately(object):
                 status, xcache, xerror = purger.purgeSync(url)
                 self.write(
                     "    response with status: {status}, X-Cache: {xcache}\n".format(
-                        status=status,
-                        xcache=xcache
+                        status=status, xcache=xcache
                     )
                 )
                 if traceback and xerror:

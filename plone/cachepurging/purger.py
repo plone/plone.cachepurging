@@ -34,9 +34,7 @@ logger = logging.getLogger(__name__)
 
 @implementer(IPurger)
 class DefaultPurger(object):
-    def __init__(
-        self, timeout=(3, 27), backlog=0, errorHeaders=("x-squid-error",)
-    ):
+    def __init__(self, timeout=(3, 27), backlog=0, errorHeaders=("x-squid-error",)):
         self.timeout = timeout
         self.queues = {}
         self.workers = {}
@@ -62,9 +60,7 @@ class DefaultPurger(object):
             if xerror:
                 # Break on first found.
                 break
-        logger.debug(
-            "%s of %s: %s %s", httpVerb, url, resp.status_code, resp.reason
-        )
+        logger.debug("%s of %s: %s %s", httpVerb, url, resp.status_code, resp.reason)
         return resp, xcache, xerror
 
     def purgeSync(self, url, httpVerb="PURGE"):
@@ -83,9 +79,7 @@ class DefaultPurger(object):
             # Avoid leaking a ref to traceback.
             del err, msg, tb
             xcache = ""
-        logger.debug(
-            "Finished %s for %s: %s %s" % (httpVerb, url, status, xcache)
-        )
+        logger.debug("Finished %s for %s: %s %s" % (httpVerb, url, status, xcache))
         if xerror:
             logger.debug("Error while purging %s:\n%s" % (url, xerror))
         logger.debug("Completed synchronous purge of %s", url)
@@ -123,10 +117,7 @@ class DefaultPurger(object):
             for worker in six.itervalues(self.workers):
                 worker.join(5)
                 if worker.is_alive():
-                    logger.warning(
-                        "Worker thread %s failed to terminate",
-                        worker
-                    )
+                    logger.warning("Worker thread %s failed to terminate", worker)
                     return False
         return True
 
@@ -141,17 +132,11 @@ class DefaultPurger(object):
             self.queueLock.acquire()
             try:
                 if key not in self.queues:
-                    logger.debug(
-                        "Creating worker thread for %s://%s", scheme, host
-                    )
+                    logger.debug("Creating worker thread for %s://%s", scheme, host)
                     if key in self.workers:
-                        raise ValueError(
-                            "Queue Key must not already exist in workers"
-                        )
+                        raise ValueError("Queue Key must not already exist in workers")
                     self.queues[key] = queue_ = queue.Queue(self.backlog)
-                    self.workers[key] = worker = Worker(
-                        queue_, host, scheme, self
-                    )
+                    self.workers[key] = worker = Worker(queue_, host, scheme, self)
                     worker.start()
             finally:
                 self.queueLock.release()
@@ -163,8 +148,7 @@ class DefaultPurger(object):
 
 
 class Worker(threading.Thread):
-    """Worker thread for purging.
-    """
+    """Worker thread for purging."""
 
     def __init__(self, queue, host, scheme, producer):
         self.host = host
@@ -172,9 +156,7 @@ class Worker(threading.Thread):
         self.producer = producer
         self.queue = queue
         self.stopping = False
-        super(Worker, self).__init__(
-            name="PurgeThread for %s://%s" % (scheme, host)
-        )
+        super(Worker, self).__init__(name="PurgeThread for %s://%s" % (scheme, host))
 
     def stop(self):
         self.stopping = True
@@ -204,16 +186,12 @@ class Worker(threading.Thread):
                             break
                         # Got an item, purge it!
                         try:
-                            resp, msg, err = self.producer.purge(
-                                session, url, httpVerb
-                            )
+                            resp, msg, err = self.producer.purge(session, url, httpVerb)
                             if resp.status_code == requests.codes.ok:
                                 break  # all done with this item!
                             if resp.status_code == requests.codes.not_found:
                                 # not found is valid
-                                logger.debug(
-                                    "Purge URL not found: {0}".format(url)
-                                )
+                                logger.debug("Purge URL not found: {0}".format(url))
                                 break  # all done with this item!
                         except Exception:
                             # All other exceptions are evil - we just disard
@@ -228,8 +206,7 @@ class Worker(threading.Thread):
 
         except Exception:
             logger.exception(
-                "Exception in worker thread "
-                "for (%s, %s)" % (self.host, self.scheme)
+                "Exception in worker thread " "for (%s, %s)" % (self.host, self.scheme)
             )
         logger.debug("%s terminating", self)
 

@@ -89,8 +89,7 @@ class IPurgePathRewriter(Interface):
 
 
 class IPurger(Interface):
-    """A utility used to manage the purging process.
-    """
+    """A utility used to manage the purging process."""
 
     def purgeAsync(url, httpVerb="PURGE"):
         """Send a PURGE request to a particular URL asynchronously in a
@@ -121,6 +120,4 @@ class IPurger(Interface):
         default=("x-squid-error",),
     )
 
-    http_1_1 = schema.Bool(
-        title=u"Use HTTP 1.1 for PURGE request", default=True
-    )
+    http_1_1 = schema.Bool(title=u"Use HTTP 1.1 for PURGE request", default=True)

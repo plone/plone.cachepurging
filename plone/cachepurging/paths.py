@@ -8,8 +8,7 @@ from zope.interface import implementer
 @implementer(IPurgePaths)
 @adapter(ITraversable)
 class TraversablePurgePaths(object):
-    """Default purge for OFS.Traversable-style objects
-    """
+    """Default purge for OFS.Traversable-style objects"""
 
     def __init__(self, context):
         self.context = context

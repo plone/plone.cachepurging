@@ -173,7 +173,7 @@ class TestAsync(TestCase):
         self.dispatchURL("/bar")  # will consume error, then retry
         self.assertTrue(
             self.httpd.response_queue.empty(),
-            "Left items behind in HTTPD response queue."
+            "Left items behind in HTTPD response queue.",
         )
 
     def testAsyncNotFOund(self):
@@ -181,13 +181,12 @@ class TestAsync(TestCase):
         self.httpd.queue_response(response=200)
         self.dispatchURL("/foo")  # works
         self.assertFalse(
-            self.httpd.response_queue.empty(),
-            "404 was retried instead of consumed."
+            self.httpd.response_queue.empty(), "404 was retried instead of consumed."
         )
         self.dispatchURL("/foo")  # works
         self.assertTrue(
             self.httpd.response_queue.empty(),
-            "Left items behind in HTTPD response queue."
+            "Left items behind in HTTPD response queue.",
         )
 
 

@@ -18,8 +18,7 @@ KEY = "plone.cachepurging.urls"
 
 @adapter(IPurgeEvent)
 def queuePurge(event):
-    """Find URLs to purge and queue them for later
-    """
+    """Find URLs to purge and queue them for later"""
 
     request = getRequest()
     if request is None:
@@ -38,8 +37,7 @@ def queuePurge(event):
 
 @adapter(IPubSuccess)
 def purge(event):
-    """Asynchronously send PURGE requests
-    """
+    """Asynchronously send PURGE requests"""
 
     request = event.request
 

@@ -8,8 +8,7 @@ from zope.component import queryUtility
 
 
 def isCachePurgingEnabled(registry=None):
-    """Return True if caching is enabled
-    """
+    """Return True if caching is enabled"""
 
     if registry is None:
         registry = queryUtility(IRegistry)

@@ -12,8 +12,7 @@ from zope.interface import Interface
 @implementer(IPurgePathRewriter)
 @adapter(Interface)
 class DefaultRewriter(object):
-    """Default rewriter, which is aware of virtual hosting
-    """
+    """Default rewriter, which is aware of virtual hosting"""
 
     def __init__(self, request):
         self.request = request
@@ -65,9 +64,7 @@ class DefaultRewriter(object):
         # Prefix, e.g. /_vh_foo/_vh_bar. Clear if we don't have any.
         pathPrefix = len(virtualUrlParts) == 3 and virtualUrlParts[1] or ""
         if pathPrefix:
-            pathPrefix = "/" + "/".join(
-                ["_vh_%s" % p for p in pathPrefix.split("/")]
-            )
+            pathPrefix = "/" + "/".join(["_vh_%s" % p for p in pathPrefix.split("/")])
 
         # Path, e.g. /front-page
         if len(path) > 0 and not path.startswith("/"):
