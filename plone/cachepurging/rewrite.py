@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.cachepurging.interfaces import ICachePurgingSettings
 from plone.cachepurging.interfaces import IPurgePathRewriter
 from plone.registry.interfaces import IRegistry
@@ -11,7 +10,7 @@ from zope.interface import Interface
 
 @implementer(IPurgePathRewriter)
 @adapter(Interface)
-class DefaultRewriter(object):
+class DefaultRewriter:
     """Default rewriter, which is aware of virtual hosting"""
 
     def __init__(self, request):

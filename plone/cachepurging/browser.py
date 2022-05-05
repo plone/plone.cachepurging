@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.cachepurging.interfaces import ICachePurgingSettings
 from plone.cachepurging.interfaces import IPurger
 from plone.cachepurging.utils import getPathsToPurge
@@ -10,7 +9,7 @@ from zope.component import getUtility
 from zope.event import notify
 
 
-class QueuePurge(object):
+class QueuePurge:
     """Manually initiate a purge"""
 
     def __init__(self, context, request):
@@ -25,10 +24,10 @@ class QueuePurge(object):
         paths = getPathsToPurge(self.context, self.request)
 
         notify(Purge(self.context))
-        return "Queued:\n\n{0}".format("\n".join(paths))
+        return "Queued:\n\n{}".format("\n".join(paths))
 
 
-class PurgeImmediately(object):
+class PurgeImmediately:
     """Purge immediately"""
 
     def __init__(self, context, request):
@@ -55,11 +54,11 @@ class PurgeImmediately(object):
             self.write(
                 "(hint: add '?traceback' to url to show full traceback in case of errors)\n\n"
             )
-        self.write("Proxies to purge: {0}\n".format(", ".join(caching_proxies)))
+        self.write("Proxies to purge: {}\n".format(", ".join(caching_proxies)))
         for path in getPathsToPurge(self.context, self.request):
-            self.write("- process path: {0}\n".format(path))
+            self.write(f"- process path: {path}\n")
             for url in getURLsToPurge(path, caching_proxies):
-                self.write("  - send to purge {0}\n".format(url).encode("utf-8"))
+                self.write(f"  - send to purge {url}\n".encode("utf-8"))
                 status, xcache, xerror = purger.purgeSync(url)
                 self.write(
                     "    response with status: {status}, X-Cache: {xcache}\n".format(

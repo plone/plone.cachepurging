@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.cachepurging.interfaces import ICachePurgingSettings
 from plone.cachepurging.rewrite import DefaultRewriter
 from plone.registry import Registry
@@ -34,14 +33,14 @@ class TestRewrite(unittest.TestCase):
     ):
         translatedPrefix = "/".join(["_vh_%s" % p for p in prefix.split("/")])
 
-        self.request["URL"] = "%s://%s%s%s" % (protocol, domain, prefix, path)
-        self.request["ACTUAL_URL"] = "%s://%s%s%s" % (
+        self.request["URL"] = f"{protocol}://{domain}{prefix}{path}"
+        self.request["ACTUAL_URL"] = "{}://{}{}{}".format(
             protocol,
             domain,
             prefix,
             path,
         )
-        self.request["SERVER_URL"] = "%s://%s" % (protocol, domain)
+        self.request["SERVER_URL"] = f"{protocol}://{domain}"
         self.request[
             "PATH_INFO"
         ] = "/VirtualHostBase/%s/%s:80%s/" "VirtualHostRoot%s%s" % (
@@ -51,17 +50,17 @@ class TestRewrite(unittest.TestCase):
             translatedPrefix,
             path,
         )
-        self.request["VIRTUAL_URL"] = "%s://%s%s" % (protocol, domain, path)
+        self.request["VIRTUAL_URL"] = f"{protocol}://{domain}{path}"
 
         if prefix:
             self.request["VIRTUAL_URL_PARTS"] = (
-                "%s://%s" % (protocol, domain),
+                f"{protocol}://{domain}",
                 prefix[1:],
                 path[1:],
             )
         else:
             self.request["VIRTUAL_URL_PARTS"] = (
-                "%s://%s" % (protocol, domain),
+                f"{protocol}://{domain}",
                 path[1:],
             )
 

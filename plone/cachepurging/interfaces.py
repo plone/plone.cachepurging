@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope import schema
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface
@@ -14,57 +13,57 @@ class ICachePurgingSettings(Interface):
     """
 
     enabled = schema.Bool(
-        title=_(u"Enable purging"),
-        description=_(u"If disabled, no purging will take place"),
+        title=_("Enable purging"),
+        description=_("If disabled, no purging will take place"),
         default=True,
     )
 
     cachingProxies = schema.Tuple(
-        title=_(u"Caching proxies"),
+        title=_("Caching proxies"),
         description=_(
-            u"Provide the URLs of each proxy to which PURGE "
-            u"requests should be sent."
+            "Provide the URLs of each proxy to which PURGE "
+            "requests should be sent."
         ),
         value_type=schema.URI(),
     )
 
     virtualHosting = schema.Bool(
-        title=_(u"Send PURGE requests with virtual hosting paths"),
+        title=_("Send PURGE requests with virtual hosting paths"),
         description=_(
-            u"This option is only relevant if you are using "
-            u"virtual hosting with Zope's VirtualHostMonster. "
-            u"This relies on special tokens (VirtualHostBase "
-            u"and VirtualHostRoot) in the URL to instruct "
-            u"Zope about the types of URLs that the user sees. "
-            u"If virtual host URLs are in use and this option "
-            u"is set, PURGE requests will be sent to the "
-            u"caching proxy with the virtual hosting tokens "
-            u"in place. This makes sense if there is a web "
-            u"server in front of your caching proxy performing "
-            u"the rewrites necessary to translate a user-"
-            u"facing URL into a virtual hosting URL, so that "
-            u"the requests the caching proxy sees have the "
-            u"rewrite information in them. Conversely, if the "
-            u"rewrite is done in or behind the caching proxy, "
-            u"you want to disable this option, so that the "
-            u"PURGE requests use URLs that match those seen "
-            u"by the caching proxy as they come from the "
-            u"client."
+            "This option is only relevant if you are using "
+            "virtual hosting with Zope's VirtualHostMonster. "
+            "This relies on special tokens (VirtualHostBase "
+            "and VirtualHostRoot) in the URL to instruct "
+            "Zope about the types of URLs that the user sees. "
+            "If virtual host URLs are in use and this option "
+            "is set, PURGE requests will be sent to the "
+            "caching proxy with the virtual hosting tokens "
+            "in place. This makes sense if there is a web "
+            "server in front of your caching proxy performing "
+            "the rewrites necessary to translate a user-"
+            "facing URL into a virtual hosting URL, so that "
+            "the requests the caching proxy sees have the "
+            "rewrite information in them. Conversely, if the "
+            "rewrite is done in or behind the caching proxy, "
+            "you want to disable this option, so that the "
+            "PURGE requests use URLs that match those seen "
+            "by the caching proxy as they come from the "
+            "client."
         ),
         required=True,
         default=False,
     )
 
     domains = schema.Tuple(
-        title=_(u"Domains"),
+        title=_("Domains"),
         description=_(
-            u"This option is only relevant if you are using "
-            u"virtual hosting and you have enabled the option "
-            u"to send PURGE requests with virtual hosting URLs "
-            u"above. If you your site is served on multiple "
-            u"domains e.g. http://example.org and "
-            u"http://www.example.org you may wish to purge "
-            u"both. If so, list all your domains here"
+            "This option is only relevant if you are using "
+            "virtual hosting and you have enabled the option "
+            "to send PURGE requests with virtual hosting URLs "
+            "above. If you your site is served on multiple "
+            "domains e.g. http://example.org and "
+            "http://www.example.org you may wish to purge "
+            "both. If so, list all your domains here"
         ),
         required=False,
         default=(),
@@ -115,9 +114,9 @@ class IPurger(Interface):
         """
 
     errorHeaders = schema.Tuple(
-        title=u"Error header names",
+        title="Error header names",
         value_type=schema.ASCIILine(),
         default=("x-squid-error",),
     )
 
-    http_1_1 = schema.Bool(title=u"Use HTTP 1.1 for PURGE request", default=True)
+    http_1_1 = schema.Bool(title="Use HTTP 1.1 for PURGE request", default=True)

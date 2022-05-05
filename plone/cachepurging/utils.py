@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.cachepurging.interfaces import ICachePurgingSettings
 from plone.cachepurging.interfaces import IPurgePathRewriter
 from plone.registry.interfaces import IRegistry
@@ -36,14 +35,12 @@ def getPathsToPurge(context, request):
                     yield relativePath
                 else:
                     rewrittenPaths = rewriter(relativePath) or []  # None -> []
-                    for rewrittenPath in rewrittenPaths:
-                        yield rewrittenPath
+                    yield from rewrittenPaths
 
         # add absoute paths, which are not
         absolutePaths = pathProvider.getAbsolutePaths()
         if absolutePaths:
-            for absolutePath in absolutePaths:
-                yield absolutePath
+            yield from absolutePaths
 
 
 def getURLsToPurge(path, proxies):

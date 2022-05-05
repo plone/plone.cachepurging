@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """The following is borrowed heavily from Products.CMFSquidTool. That code
 is ZPL licensed.
 
@@ -15,7 +14,6 @@ Asynchronous purging works as follows:
 from App.config import getConfiguration
 from plone.cachepurging.interfaces import IPurger
 from six.moves import queue
-from six.moves import range
 from six.moves.urllib.parse import urlparse
 from traceback import format_exception
 from zope.interface import implementer
@@ -33,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 @implementer(IPurger)
-class DefaultPurger(object):
+class DefaultPurger:
     def __init__(self, timeout=(3, 27), backlog=0, errorHeaders=("x-squid-error",)):
         self.timeout = timeout
         self.queues = {}
@@ -79,9 +77,9 @@ class DefaultPurger(object):
             # Avoid leaking a ref to traceback.
             del err, msg, tb
             xcache = ""
-        logger.debug("Finished %s for %s: %s %s" % (httpVerb, url, status, xcache))
+        logger.debug(f"Finished {httpVerb} for {url}: {status} {xcache}")
         if xerror:
-            logger.debug("Error while purging %s:\n%s" % (url, xerror))
+            logger.debug(f"Error while purging {url}:\n{xerror}")
         logger.debug("Completed synchronous purge of %s", url)
         return status, xcache, xerror
 
@@ -104,7 +102,7 @@ class DefaultPurger(object):
                 )
 
     def stopThreads(self, wait=False):
-        for worker in six.itervalues(self.workers):
+        for worker in self.workers.values():
             worker.stop()
         # in case the queue is empty, wake it up so the .stopping flag is seen
         for q in self.queues.values():
@@ -114,7 +112,7 @@ class DefaultPurger(object):
                 # no problem - self.stopping should be seen.
                 pass
         if wait:
-            for worker in six.itervalues(self.workers):
+            for worker in self.workers.values():
                 worker.join(5)
                 if worker.is_alive():
                     logger.warning("Worker thread %s failed to terminate", worker)
@@ -156,7 +154,7 @@ class Worker(threading.Thread):
         self.producer = producer
         self.queue = queue
         self.stopping = False
-        super(Worker, self).__init__(name="PurgeThread for %s://%s" % (scheme, host))
+        super().__init__(name=f"PurgeThread for {scheme}://{host}")
 
     def stop(self):
         self.stopping = True
@@ -191,17 +189,17 @@ class Worker(threading.Thread):
                                 break  # all done with this item!
                             if resp.status_code == requests.codes.not_found:
                                 # not found is valid
-                                logger.debug("Purge URL not found: {0}".format(url))
+                                logger.debug(f"Purge URL not found: {url}")
                                 break  # all done with this item!
                         except Exception:
                             # All other exceptions are evil - we just disard
                             # the item.  This prevents other logic failures etc
                             # being retried.
-                            logger.exception("Failed to purge {0}".format(url))
+                            logger.exception(f"Failed to purge {url}")
                             break
                         logger.debug(
-                            "Transient failure on {0} for {1}, "
-                            "retrying: {2}".format(httpVerb, url, i)
+                            "Transient failure on {} for {}, "
+                            "retrying: {}".format(httpVerb, url, i)
                         )
 
         except Exception:
