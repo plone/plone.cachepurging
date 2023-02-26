@@ -335,7 +335,7 @@ The name is not significant, but should be unique unless it is intended to
 override an existing adapter. By convention, you should prefix the name with
 your package's dotted name unless you have a reason not to.
 
-The default adapter thats simply returns ``absolute_url_path()`` is called
+The default adapter that simply returns ``absolute_url_path()`` is called
 ``default``.
 
 

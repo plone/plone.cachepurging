@@ -191,7 +191,7 @@ class Worker(threading.Thread):
                                 logger.debug(f"Purge URL not found: {url}")
                                 break  # all done with this item!
                         except Exception:
-                            # All other exceptions are evil - we just disard
+                            # All other exceptions are evil - we just discard
                             # the item.  This prevents other logic failures etc
                             # being retried.
                             logger.exception(f"Failed to purge {url}")
