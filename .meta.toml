@@ -3,3 +3,8 @@
 [meta]
 template = "default"
 commit-id = "359b1152"
+
+[dependencies]
+mappings = [
+    "Zope = ['App', 'OFS', 'ZPublisher']",
+    ]
