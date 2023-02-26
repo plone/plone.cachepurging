@@ -13,14 +13,14 @@ Asynchronous purging works as follows:
 
 from App.config import getConfiguration
 from plone.cachepurging.interfaces import IPurger
-import queue
-from urllib.parse import urlparse
 from traceback import format_exception
+from urllib.parse import urlparse
 from zope.interface import implementer
 from zope.testing.cleanup import addCleanUp
 
 import atexit
 import logging
+import queue
 import requests
 import six
 import sys
