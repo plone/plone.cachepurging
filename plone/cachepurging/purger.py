@@ -22,7 +22,6 @@ import atexit
 import logging
 import queue
 import requests
-import six
 import sys
 import threading
 

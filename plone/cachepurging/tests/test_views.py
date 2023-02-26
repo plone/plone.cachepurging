@@ -125,7 +125,7 @@ class TestPurgeImmediately(unittest.TestCase):
 
     def test_purge(self):
         request = FauxRequest()
-        view = PurgeImmediately(FauxContext(), request)()
+        PurgeImmediately(FauxContext(), request)()
         self.assertEqual(
             [
                 b"Cache purging initiated...\n\n",
