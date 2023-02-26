@@ -33,7 +33,6 @@ class FauxResponse:
 
 
 class FauxRequest(dict):
-
     form = dict()
 
     def __init__(self, *args, **kw):

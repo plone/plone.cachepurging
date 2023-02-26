@@ -13,7 +13,6 @@ class FauxTraversable:
 
 class TestTraversablePaths(unittest.TestCase):
     def test_traversable_paths(self):
-
         context = FauxTraversable()
         paths = TraversablePurgePaths(context)
 
