@@ -102,7 +102,7 @@ take place:
 If you need more control, you can perform the purging directly. Here is a
 snippet adapted from the ``plone.cachepurging.purge`` view::
 
-        from six import StringIO
+        from io import StringIO
 
         from zope.component import getUtility
 

@@ -1,7 +1,7 @@
 from plone.cachepurging.interfaces import ICachePurgingSettings
 from plone.cachepurging.interfaces import IPurgePathRewriter
 from plone.registry.interfaces import IRegistry
-from six.moves import urllib
+from urllib.parse import urlparse
 from zope.component import adapter
 from zope.component import queryUtility
 from zope.interface import implementer
@@ -71,7 +71,7 @@ class DefaultRewriter:
 
         paths = []
         for domain in domains:
-            scheme, host = urllib.parse.urlparse(domain)[:2]
+            scheme, host = urlparse(domain)[:2]
             paths.append(
                 "/VirtualHostBase/%(scheme)s/%(host)s%(root)s/"
                 "VirtualHostRoot%(prefix)s%(path)s"
