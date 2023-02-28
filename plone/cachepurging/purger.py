@@ -13,16 +13,15 @@ Asynchronous purging works as follows:
 
 from App.config import getConfiguration
 from plone.cachepurging.interfaces import IPurger
-from six.moves import queue
-from six.moves.urllib.parse import urlparse
 from traceback import format_exception
+from urllib.parse import urlparse
 from zope.interface import implementer
 from zope.testing.cleanup import addCleanUp
 
 import atexit
 import logging
+import queue
 import requests
-import six
 import sys
 import threading
 
@@ -192,7 +191,7 @@ class Worker(threading.Thread):
                                 logger.debug(f"Purge URL not found: {url}")
                                 break  # all done with this item!
                         except Exception:
-                            # All other exceptions are evil - we just disard
+                            # All other exceptions are evil - we just discard
                             # the item.  This prevents other logic failures etc
                             # being retried.
                             logger.exception(f"Failed to purge {url}")

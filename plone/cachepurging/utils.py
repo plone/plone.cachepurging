@@ -37,7 +37,7 @@ def getPathsToPurge(context, request):
                     rewrittenPaths = rewriter(relativePath) or []  # None -> []
                     yield from rewrittenPaths
 
-        # add absoute paths, which are not
+        # add absolute paths, which are not
         absolutePaths = pathProvider.getAbsolutePaths()
         if absolutePaths:
             yield from absolutePaths

@@ -2,12 +2,12 @@
 licensed.
 """
 
+from http.server import BaseHTTPRequestHandler
+from http.server import HTTPServer
 from plone.cachepurging.purger import DefaultPurger
-from six.moves import queue
-from six.moves.BaseHTTPServer import BaseHTTPRequestHandler
-from six.moves.BaseHTTPServer import HTTPServer
 
 import os
+import queue
 import threading
 import time
 import unittest

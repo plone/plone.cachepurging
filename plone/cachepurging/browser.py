@@ -58,7 +58,7 @@ class PurgeImmediately:
         for path in getPathsToPurge(self.context, self.request):
             self.write(f"- process path: {path}\n")
             for url in getURLsToPurge(path, caching_proxies):
-                self.write(f"  - send to purge {url}\n".encode("utf-8"))
+                self.write(f"  - send to purge {url}\n".encode())
                 status, xcache, xerror = purger.purgeSync(url)
                 self.write(
                     "    response with status: {status}, X-Cache: {xcache}\n".format(

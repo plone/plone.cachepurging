@@ -69,7 +69,7 @@ class TestQueueHandler(unittest.TestCase):
 
         try:
             notify(Purge(context))
-        except:
+        except Exception:
             self.fail()
 
     def test_request_not_annotatable(self):
@@ -102,7 +102,7 @@ class TestQueueHandler(unittest.TestCase):
 
         try:
             notify(Purge(context))
-        except:
+        except Exception:
             self.fail()
 
     def test_no_registry(self):
@@ -378,7 +378,7 @@ class TestPurgeHandler(unittest.TestCase):
 
         try:
             notify(PubSuccess(request))
-        except:
+        except Exception:
             self.fail()
 
     def test_purge(self):
