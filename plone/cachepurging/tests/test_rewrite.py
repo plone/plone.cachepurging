@@ -41,14 +41,16 @@ class TestRewrite(unittest.TestCase):
             path,
         )
         self.request["SERVER_URL"] = f"{protocol}://{domain}"
-        self.request[
-            "PATH_INFO"
-        ] = "/VirtualHostBase/%s/%s:80%s/" "VirtualHostRoot%s%s" % (
-            protocol,
-            domain,
-            root,
-            translatedPrefix,
-            path,
+        self.request["PATH_INFO"] = (
+            "/VirtualHostBase/%s/%s:80%s/"
+            "VirtualHostRoot%s%s"
+            % (
+                protocol,
+                domain,
+                root,
+                translatedPrefix,
+                path,
+            )
         )
         self.request["VIRTUAL_URL"] = f"{protocol}://{domain}{path}"
 
