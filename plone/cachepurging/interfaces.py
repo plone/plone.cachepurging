@@ -75,7 +75,7 @@ class IPurgePathRewriter(Interface):
     """Used to rewrite paths for purging. This should be registered as an
     adapter on the request.
 
-    The same instance may be re-used several times in the same request.
+    The same instance may be reused several times in the same request.
     """
 
     def __call__(path):
