@@ -35,7 +35,6 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "setuptools",
         "plone.registry",
         "requests",
         "z3c.caching",
