@@ -25,7 +25,6 @@ import requests
 import sys
 import threading
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -123,7 +122,7 @@ class DefaultPurger:
         given URL.
         """
 
-        (scheme, host, path, params, query, fragment) = urlparse(url)
+        scheme, host, path, params, query, fragment = urlparse(url)
         key = (host, scheme)
         if key not in self.queues:
             self.queueLock.acquire()

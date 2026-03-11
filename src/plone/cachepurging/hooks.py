@@ -11,7 +11,6 @@ from zope.component import queryUtility
 from zope.globalrequest import getRequest
 from ZPublisher.interfaces import IPubSuccess
 
-
 KEY = "plone.cachepurging.urls"
 
 
